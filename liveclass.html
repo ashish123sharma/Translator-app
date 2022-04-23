@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+
+<style>
+#container{
+    display: flex;
+    border: 1px solid black;
+
+}
+#input,#output{
+    flex:1;
+    margin:5%;
+    height:300px;
+    border: 1px solid red;
+}
+
+#input-text{
+    width:95%;
+    height: 250px;
+}
+#out_lang{
+    color:blueviolet;
+    display: flex;
+    margin-left: 500px; ;
+}
+
+
+</style>
+
+
+
+<body>
+    
+
+     <div id="container">
+        <div id="input">
+    <select name="Langague" id="inp_lang">
+   <option value="en">English</option>
+   <option value="hi">Hindi</option>
+
+
+    </select>
+    <button onclick="Translate()"  >Translate</button>
+    <textarea name="input-text" id="input-text" cols="30" rows="10"></textarea>
+ 
+</div>
+      <div id="output">
+          <p id="output_lang"></p>
+      <select name="Langague" id="out_lang">
+        <option value="en">English</option>
+        <option value="hi">Hindi</option>
+        </select>
+      <!-- <select name="output-text" id="output-text"></select>
+      <option value="en">English</option>
+      <option value="hi">Hindi</option> -->
+
+
+
+     </div>
+    </div>
+
+</body>
+
+</html>
+
+
+
+<script>
+function read(id){
+   return document.getElementById(id).value;
+
+}
+
+
+
+async function Translate(){
+// 1 text to translate;
+
+ try{
+    const input = read("input-text");
+console.log(input);
+const input_lang = read('inp_lang')
+const output_lang = read("out_lang")
+
+// 
+
+const res = await fetch("https://libretranslate.de/translate",{
+    method:"POST",
+    body:JSON.stringify({
+        q:input,
+        source:input_lang,
+        target:output_lang,
+        format:"text"
+    }),
+    headers:{
+        "Content-type":'application/json',
+
+    }
+})
+const data = await res.json();
+console.log("data:",data);
+document.getElementById("output_lang").innerText=data.translatedText;
+}
+catch(err){
+    console.log("err",err)
+}
+}
+
+
+
+
+
+
+
+
+
+</script>
